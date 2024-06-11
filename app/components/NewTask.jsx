@@ -9,7 +9,7 @@ export default function NewTask() {
     return (
         <button type="button" onClick={handleButtonPress}>
             <div className='border-dashed border-2 border-white rounded-lg'>
-                <FontAwesomeIcon className="p-12" icon={faCirclePlus} />
+                <FontAwesomeIcon className="p-12 h-12" icon={faCirclePlus} />
             </div>
         </button>
     )

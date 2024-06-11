@@ -4,9 +4,11 @@ export default function TaskList(tasks) {
 
     return (
         <div>
-            {tasks.map((task) => (
-                NewTask
-            ))}
+            {
+            tasks.map((task) => (
+                <NewTask task = {task}/>
+            ))
+            }
         </div>
     )
 

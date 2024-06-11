@@ -1,13 +1,35 @@
-import Image from "next/image";
 import { getTodos, getTodosByUser } from "@/models/ToDoModel.js";
 import PageContent from "@/app/components/PageContent";
+import Header from "@/app/components/Header";
 export default function Home() {
+  let tasks = null
 
-  getTodos().then((todos) => {console.log(todos);} );
-  getTodosByUser("user_2hgxmegc8x4m9BchdYFRSJCLrKk").then((todos) => {console.log(todos);} );
+
+  //getTodosByUser("user_2hgxmegc8x4m9BchdYFRSJCLrKk").then((todos) => {console.log(todos);} );
+  getTodos()
+  .then((todos) => {tasks = todos
+
+    return (
+      <>
+        <Header />
+        <main className="flex flex-col items-center justify-between p-24">
+            <PageContent tasks={tasks}/>
+        </main>
+      </>
+    );
+
+
+
+  })
+  .catch((error) => {console.log(error)});
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <PageContent/>
-    </main>
+    <>
+      <Header />
+      <main className="flex flex-col items-center justify-between p-24">
+          <PageContent tasks={tasks}/>
+      </main>
+    </>
   );
+
 }

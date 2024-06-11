@@ -7,9 +7,11 @@ export default function RootLayout({
   return (
       <html lang="en">
         <body>
+        <ClerkProvider>
           <main>
             {children}
           </main>
+        </ClerkProvider>
         </body>
       </html>
   )
