@@ -3,38 +3,49 @@ import NewTask from "./NewTask.jsx";
 import { useUser } from "@clerk/nextjs";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import Task from "./Task.jsx";
 
 
-export default function PageContent({taskObject}){
+export default function PageContent({ getTaskForUser, createTask, updateTask, deleteTask }) {
+
   const { isLoaded, isSignedIn, user } = useUser();
 
-  if (!isLoaded||!isSignedIn){
+  if (!isLoaded || !isSignedIn) {
     return <RedirectToSignIn />
-    }
+  }
 
-  const[tasks, setTasks] = useState(taskObject);
-  console.log(tasks)
+  const [tasks, setTasks] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
+  }, [])
 
 
-    useEffect(() => {
-        console.log("Tasks: ", taskObject);
-        setTasks(taskObject);
-    }, [taskObject]);
+  return (
 
+    <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+      <div className="flex flex-row">
+        <NewTask createTask={createTask} showModal={showModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} userid={user.id} />
+        {
+          tasks.length > 0 &&
+          tasks.map((task) => (
+            <div className="m-4" key={task.id}>
+              <Task updateTask={updateTask} deleteTask={deleteTask} task={task} showModal={showModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} setShowModal={setShowModal} userid={user.id}/>
+            </div>
+          ))
+        }
+      </div>
 
+    </div>
 
-    return(
-
-        <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-          <div>
-          <NewTask />
-          </div>
-
-          <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-            Hello, {user.firstName} {user.lastName} {user.id}
-          </p>
-
-        </div>
-
-    )
+  )
 }
