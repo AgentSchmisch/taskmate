@@ -15,35 +15,44 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
   }
 
   const [tasks, setTasks] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [visibleModal, setShowModal] = useState(null);
+  const [reload, setReload] = useState(false);
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
+  function loadData(){
+    getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
+  }
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowModal(null);
+    setReload(true)
   };
 
   useEffect(() => {
-    getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
+    loadData();
   }, [])
 
+  useEffect(()=>{
+    loadData();
+    setReload(false)
+  },[reload])
 
   return (
 
     <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
       <div className="flex flex-row">
-        <NewTask createTask={createTask} showModal={showModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} userid={user.id} />
-        {
+        <div className="m-4">
+        <NewTask createTask={createTask} showModal={visibleModal === "new"} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} userid={user.id} />
+        </div>
+
+      </div>
+      {
           tasks.length > 0 &&
           tasks.map((task) => (
             <div className="m-4" key={task.id}>
-              <Task updateTask={updateTask} deleteTask={deleteTask} task={task} showModal={showModal} handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} setShowModal={setShowModal} userid={user.id}/>
+              <Task updateTask={updateTask} deleteTask={deleteTask} task={task} showModal={visibleModal === task.id} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} setShowModal={setShowModal} userid={user.id}/>
             </div>
           ))
         }
-      </div>
 
     </div>
 

@@ -4,8 +4,8 @@ export default function Header() {
     const customStyles = {
         elements: {
             userButtonAvatarBox: {
-                height: "3rem", // Remove the circular shape
-                width: "3rem", // Remove the circular shape
+                height: "3rem", 
+                width: "3rem", 
             },
         },
     };

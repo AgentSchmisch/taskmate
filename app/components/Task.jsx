@@ -1,20 +1,20 @@
 "use client"
+
 import Modal from "./Modal.jsx";
-import { useState } from "react";
-import {useRouter} from 'next/navigation';
+import { useState, useEffect } from "react";
 
 export default function Task({ task, showModal, handleOpenModal, handleCloseModal, updateTask, deleteTask, userid }) {
-    let router = useRouter();
-    
+
+
     function handleButtonPress() {
-        handleOpenModal()
+        handleOpenModal(task.id)
     }
 
     function handleSubmit(event) {
         event.preventDefault();
         handleCloseModal();
         updateTask(formData, userid).then(() => {
-        router.push("/");
+            setChanged(false)
         })
     }
 
@@ -29,6 +29,7 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
         return formattedDate;
     }
 
+
     const [formData, setFormData] = useState({
         id: task.id || '',
         name: task.name || '',
@@ -38,28 +39,33 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
         status: task.status || ''
     });
 
+    const [changed, setChanged] = useState(false);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value
         }));
+        setChanged(true)
     };
+
+
+
     function handleDelete() {
         handleCloseModal();
         deleteTask(formData, userid)
-        router.push("/");
     }
 
     return (
         <>
-            <button className="border-solid border-2 border-white rounded-lg" onClick={handleButtonPress}>
-                <div className='p-12 flex flex-col'>
+            <button className={`border-solid border-2 border-white rounded-lg ${task.priority==="low"?"bg-green-700":""} ${task.priority==="medium"?"bg-yellow-700":""} ${task.priority==="high"?"bg-red-700":""}`} onClick={handleButtonPress}>
+                <div className=' flex flex-col m-12'>
                     <p className="font-bold	">{task.name}</p>
                     <p>{reformatDate(formData.duedate)}</p>
                 </div>
             </button>
-            <Modal show={showModal} onClose={handleCloseModal}>
+            <Modal show={showModal} onClose={handleCloseModal} changed={changed}>
                 <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans">
                     <div className="flex flex-col">
                         <label htmlFor="name" className="mb-2 font-semibold text-gray-700">Name</label>
@@ -123,17 +129,18 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
-                            required
                             className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                         </textarea>
                     </div>
-                    <button type="button" onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
-                        Delete
-                    </button>
-                    <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Submit
-                    </button>
+                    <div className="flex flex-row justify-between">
+                        <button type="button" onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            Delete
+                        </button>
+                        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            Save
+                        </button>
+                    </div>
                 </form>
             </Modal>
         </>

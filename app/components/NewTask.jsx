@@ -3,12 +3,9 @@ import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 import Modal from "./Modal.jsx";
 
-export default function NewTask({createTask, showModal, handleOpenModal,handleCloseModal, userid}) {
-    //create a useState for the whole form
-    
-    
+export default function NewTask({createTask, showModal, handleOpenModal,handleCloseModal, userid}) {    
     function handleButtonPress() {
-        handleOpenModal()
+        handleOpenModal("new")
     }
     
     function handleSubmit(event) {
@@ -34,13 +31,7 @@ export default function NewTask({createTask, showModal, handleOpenModal,handleCl
         }));
     };
 
-    function handleDelete() {
-        handleCloseModal();
-        deleteTask(formData, userid)
-    }
-
     return (
-
         <>
         <button type="button" onClick={handleButtonPress}>
             <div className='border-dashed border-2 border-white rounded-lg'>
@@ -94,7 +85,6 @@ export default function NewTask({createTask, showModal, handleOpenModal,handleCl
                     required
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                    <option value="">Select status</option>
                     <option value="not started">Not Started</option>
                     <option value="in progress">In Progress</option>
                     <option value="completed">Completed</option>
@@ -106,14 +96,10 @@ export default function NewTask({createTask, showModal, handleOpenModal,handleCl
                     id="description"
                     name="description"
                     onChange={handleChange}
-                    required
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                 </textarea>
             </div>
-            <button type="button" onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
-                Delete
-            </button>
             <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 Submit
             </button>

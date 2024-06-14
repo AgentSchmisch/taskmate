@@ -1,6 +1,7 @@
 "use server"
 
 import { Todo } from '../services/database/model.js';
+import { Op } from 'sequelize';
 
 const getTodos = () => {
     return Todo.findAll();
@@ -8,7 +9,7 @@ const getTodos = () => {
 
 async function getTodosByUser(userid) {
     let tasks = JSON.parse(JSON.stringify(await Todo.findAll({
-        where: { userid: userid },
+        where: { userid: userid, status:{[Op.not]:"completed"}  },
     })))
 
     return tasks
@@ -27,7 +28,7 @@ async function createTodo (userdata, userid) {
     return task
 };
 
-async function updateTodo(userdata,userid){
+async function updateTodo(userdata, userid){
     return Todo.update({
         name: userdata.name,
         priority: userdata.priority,
@@ -35,11 +36,11 @@ async function updateTodo(userdata,userid){
         duedate: userdata.duedate,
         status: userdata.status,
         
-    },{where:{userid: userid, id:userdata.id}})
+    },{where:{userid: userid, id: userdata.id}})
 }
 
 async function deleteTodo(userdata, userid){
-    return Todo.destroy({where:{id:userdata.id, userid:userid}})
+    return Todo.destroy({where:{id: userdata.id, userid:userid}})
 }
 
 

@@ -52,12 +52,12 @@ const Todo = sequelize.define('Todo', {
     },
     description: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     status: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'Not Started',
+        defaultValue: 'not started',
     },
     duedate: {
         type: DataTypes.DATE,
