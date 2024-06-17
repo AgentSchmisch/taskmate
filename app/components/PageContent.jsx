@@ -9,23 +9,9 @@ import Task from "./Task.jsx";
 export default function PageContent({ getTaskForUser, createTask, updateTask, deleteTask }) {
 
   const { isLoaded, isSignedIn, user } = useUser();
-
-  if (!isLoaded || !isSignedIn) {
-    return <RedirectToSignIn />
-  }
-
   const [tasks, setTasks] = useState([]);
   const [visibleModal, setShowModal] = useState(null);
   const [reload, setReload] = useState(false);
-
-  function loadData(){
-    getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
-  }
-
-  const handleCloseModal = () => {
-    setShowModal(null);
-    setReload(true)
-  };
 
   useEffect(() => {
     loadData();
@@ -35,6 +21,28 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
     loadData();
     setReload(false)
   },[reload])
+  
+  useEffect(()=>{
+    loadData()
+  },[user])
+
+  if (!isLoaded || !isSignedIn) {
+    return <RedirectToSignIn />
+  }
+
+
+  function loadData(){
+    if (!user){
+      return
+    }
+    getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
+  }
+
+  const handleCloseModal = () => {
+    setShowModal(null);
+    setReload(true)
+  };
+
 
   return (
 
