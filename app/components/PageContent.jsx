@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import Task from "./Task.jsx";
 
 
-export default function PageContent({ getTaskForUser, createTask, updateTask, deleteTask }) {
+export default function PageContent({ getTaskForUser, createTask, updateTask, deleteTask, getTaskForToday }) {
 
   const { isLoaded, isSignedIn, user } = useUser();
   const [tasks, setTasks] = useState([]);
+  const[todaysTasks, setTodaysTasks] = useState([])
+
   const [visibleModal, setShowModal] = useState(null);
   const [reload, setReload] = useState(false);
 
@@ -21,7 +23,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
     loadData();
     setReload(false)
   },[reload])
-  
+
   useEffect(()=>{
     loadData()
   },[user])
@@ -36,6 +38,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
       return
     }
     getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
+    getTaskForToday(user.id).then((_todaysTasks) => { setTodaysTasks(_todaysTasks) });
   }
 
   const handleCloseModal = () => {
@@ -46,7 +49,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
 
   return (
 
-    <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+    <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm flex-wrap lg:flex">
       <div className="flex flex-row">
         <div className="m-4">
         <NewTask createTask={createTask} showModal={visibleModal === "new"} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} userid={user.id} />
@@ -62,7 +65,22 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
           ))
         }
 
+      <div>
+        <h1 className="font-bold">Your Tasks for Today</h1>
+        {
+          todaysTasks.length > 0 &&
+          todaysTasks.map((task) => (
+            <div className="m-4" key={task.id}>
+              <Task updateTask={updateTask} deleteTask={deleteTask} task={task} showModal={visibleModal === task.id} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} setShowModal={setShowModal} userid={user.id}/>
+            </div>
+          ))
+        }
+
+
+      </div>
+
     </div>
+
 
   )
 }
