@@ -8,11 +8,15 @@ const getTodos = () => {
 };
 
 async function getTodosByUser(userid) {
-    let tasks = JSON.parse(JSON.stringify(await Todo.findAll({
-        where: { userid: userid, status: { [Op.not]: "completed" } },
-    })))
+    try {
+        let tasks = JSON.parse(JSON.stringify(await Todo.findAll({
+            where: { userid: userid, status: { [Op.not]: "completed" } },
+        })))
+        return tasks
+    } catch (error) {
+        reject(error)
+    }
 
-    return tasks
 };
 
 async function getTodosForToday(userid) {
@@ -26,7 +30,8 @@ async function getTodosForToday(userid) {
     // End of today
     var endOfToday = `${yyyy}-${mm}-${dd}T23:59:59Z`;
 
-    // Fetch tasks for today
+    try {
+            // Fetch tasks for today
     let tasks = await Todo.findAll({
         where: {
             userid: userid,
@@ -39,34 +44,53 @@ async function getTodosForToday(userid) {
     // Convert tasks to plain JSON
     tasks = JSON.parse(JSON.stringify(tasks));
     return tasks;
+    } catch (error) {
+        reject(error)
+    }
+
 }
 
 async function createTodo(userdata, userid) {
-    let task = JSON.parse(JSON.stringify(Todo.create({
-        userid: userid,
-        name: userdata.name,
-        priority: userdata.priority,
-        description: userdata.description,
-        duedate: userdata.duedate,
-        status: userdata.status,
-    })))
 
-    return task
+    try {
+        let task = JSON.parse(JSON.stringify(Todo.create({
+            userid: userid,
+            name: userdata.name,
+            priority: userdata.priority,
+            description: userdata.description,
+            duedate: userdata.duedate,
+            status: userdata.status,
+        })))
+    
+        return task
+    } catch (error) {
+        reject(error)
+    }
+
 };
 
 async function updateTodo(userdata, userid) {
-    return Todo.update({
-        name: userdata.name,
-        priority: userdata.priority,
-        description: userdata.description,
-        duedate: userdata.duedate,
-        status: userdata.status,
-
-    }, { where: { userid: userid, id: userdata.id } })
+    try {
+        return Todo.update({
+            name: userdata.name,
+            priority: userdata.priority,
+            description: userdata.description,
+            duedate: userdata.duedate,
+            status: userdata.status,
+    
+        }, { where: { userid: userid, id: userdata.id } })
+    } catch (error) {
+        reject(error)
+    }
+    
 }
 
 async function deleteTodo(userdata, userid) {
-    return Todo.destroy({ where: { id: userdata.id, userid: userid } })
+    try {
+        return Todo.destroy({ where: { id: userdata.id, userid: userid } })
+    } catch (error) {
+        reject(error)
+    }
 }
 
 

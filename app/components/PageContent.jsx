@@ -14,6 +14,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
 
   const [visibleModal, setShowModal] = useState(null);
   const [reload, setReload] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -28,6 +29,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
     loadData()
   },[user])
 
+
   if (!isLoaded || !isSignedIn) {
     return <RedirectToSignIn />
   }
@@ -37,8 +39,18 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
     if (!user){
       return
     }
-    getTaskForUser(user.id).then((_tasks) => { setTasks(_tasks) });
-    getTaskForToday(user.id).then((_todaysTasks) => { setTodaysTasks(_todaysTasks) });
+    getTaskForUser(user.id)
+    .then((_tasks) => { setTasks(_tasks) })
+    .catch((error) => {
+      console.log(error.sqlMessage)
+      setError("Error loading tasks")  
+    })
+    getTaskForToday(user.id)
+    .then((_todaysTasks) => { setTodaysTasks(_todaysTasks) })
+    .catch((error) => {
+      console.log(error.sqlMessage)
+      setError("Error loading tasks")  
+    })
   }
 
   const handleCloseModal = () => {
@@ -50,6 +62,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
   return (
 
     <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm flex-wrap lg:flex">
+      <p>{error}</p>
       <div className="flex flex-row">
         <div className="m-4">
         <NewTask createTask={createTask} showModal={visibleModal === "new"} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} userid={user.id} />
@@ -67,15 +80,16 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
 
       <div>
         <h1 className="font-bold">Your Tasks for Today</h1>
-        {
-          todaysTasks.length > 0 &&
-          todaysTasks.map((task) => (
-            <div className="m-4" key={task.id}>
-              <Task updateTask={updateTask} deleteTask={deleteTask} task={task} showModal={visibleModal === task.id} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} setShowModal={setShowModal} userid={user.id}/>
-            </div>
-          ))
-        }
-
+        <div className="flex flex-row flex-wrap">
+          {
+            todaysTasks.length > 0 &&
+            todaysTasks.map((task) => (
+              <div className="m-4" key={task.id}>
+                <Task updateTask={updateTask} deleteTask={deleteTask} task={task} showModal={visibleModal === task.id} handleOpenModal={setShowModal} handleCloseModal={handleCloseModal} setShowModal={setShowModal} userid={user.id}/>
+              </div>
+            ))
+          }
+        </div>
 
       </div>
 

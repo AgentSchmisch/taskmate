@@ -20,7 +20,8 @@ export default function Header() {
 
                     <div className='flex flex-row space-x-4'>
                         <a className="text-xl text-black" href="/">Home</a>
-                        <a className="text-xl text-black" href="#">Tasks</a>
+                        <a className="text-xl text-black" href="/">Tasks</a>
+                        <a className="text-xl text-black" href="/notes">Notes</a>
                     </div>
 
                     <div className='flex items-center'>
