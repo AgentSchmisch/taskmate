@@ -65,8 +65,8 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
                     <p>{reformatDate(formData.duedate)}</p>
                 </div>
             </button>
-            <Modal show={showModal} onClose={handleCloseModal} changed={changed}>
-                <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans">
+            <Modal show={showModal} onClose={handleCloseModal} changed={changed} type={"task"}>
+                <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans ">
                     <div className="flex flex-col">
                         <label htmlFor="name" className="mb-2 font-semibold text-gray-700">Name</label>
                         <input

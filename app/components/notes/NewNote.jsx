@@ -53,9 +53,9 @@ export default function NewNote({createNote, handleOpenModal, handleCloseModal, 
             </div>
         </button>
         {/*Here is the content for the Note's Modal */}
-        <Modal show={showModal} onClose={handleCloseModal}>
+        <Modal type={"note"} show={showModal} onClose={handleCloseModal}>
 
-            <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans">
+            <form onSubmit={handleSubmit} className="h-full space-y-4 p-6 bg-white rounded-lg shadow-md font-sans">
             <div className="flex flex-col">
                         <label htmlFor="name" className="mb-2 font-semibold text-gray-700">Name</label>
                         <input
@@ -74,7 +74,7 @@ export default function NewNote({createNote, handleOpenModal, handleCloseModal, 
                             id="content"
                             name="content"
                             onChange={handleChange}
-                            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="h-22 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save</button>

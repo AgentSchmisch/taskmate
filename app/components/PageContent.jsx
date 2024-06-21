@@ -45,6 +45,7 @@ export default function PageContent({ getTaskForUser, createTask, updateTask, de
       console.log(error.sqlMessage)
       setError("Error loading tasks")  
     })
+    
     getTaskForToday(user.id)
     .then((_todaysTasks) => { setTodaysTasks(_todaysTasks) })
     .catch((error) => {
