@@ -7,7 +7,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <title>Taskmate</title>
       <body>
+        {/* clerk is used for authentification with google */}
         <ClerkProvider>
           <Header />
           <main className='bg-[#181c24] h-full'>
