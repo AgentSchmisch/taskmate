@@ -78,7 +78,7 @@ export default function Task({ note, showModal, handleOpenModal, handleCloseModa
         <>
         {/* this is the basic display of the Note Card */}
             <button onClick={handleButtonPress} className='border-2 border-white rounded-lg'>
-                <div className='flex flex-row justify-between '>
+                <div className='flex flex-col md:flex-row justify-between '>
                     <h1 className='p-6'>{note.name}</h1>
                     <p className='p-6'>{truncateNote(note.content)}</p>
                     <p className='p-6'>{reformatDate(note.creationDate)}</p>
