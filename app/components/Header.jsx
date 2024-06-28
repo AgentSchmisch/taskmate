@@ -1,8 +1,13 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
+// ********************************
+// This is the Navbar Component
+// ********************************
+
 export default function Header() {
     const customStyles = {
         elements: {
+            // styling the Users avatar in the navbar
             userButtonAvatarBox: {
                 height: "3rem", 
                 width: "3rem", 
@@ -25,6 +30,9 @@ export default function Header() {
                     </div>
 
                     <div className='flex items-center'>
+                        {
+                            //adding the corresponding buttons if a user is logged in or signed out
+                        }
                         <SignedOut>
                             <SignInButton />
                         </SignedOut>

@@ -5,11 +5,12 @@ import { useState, useEffect } from "react";
 
 export default function Task({ task, showModal, handleOpenModal, handleCloseModal, updateTask, deleteTask, userid }) {
 
-
+    // this function is called upon clicking on a task
     function handleButtonPress() {
         handleOpenModal(task.id)
     }
 
+    // this function is called upon clicking the update button
     function handleSubmit(event) {
         event.preventDefault();
         handleCloseModal();
@@ -17,7 +18,7 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
             setChanged(false)
         })
     }
-
+    // this function reformats the date into the form dd.MM.yyy
     function reformatDate(dateString) {
         const date = new Date(dateString);
 
@@ -29,7 +30,7 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
         return formattedDate;
     }
 
-
+    // useState hook for the Data that is entered by the user
     const [formData, setFormData] = useState({
         id: task.id || '',
         name: task.name || '',
@@ -51,7 +52,7 @@ export default function Task({ task, showModal, handleOpenModal, handleCloseModa
     };
 
 
-
+    // this function is called upon clicking the delete button
     function handleDelete() {
         handleCloseModal();
         deleteTask(formData, userid)

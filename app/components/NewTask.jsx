@@ -4,10 +4,12 @@ import { useState } from "react";
 import Modal from "./Modal.jsx";
 
 export default function NewTask({ createTask, showModal, handleOpenModal, handleCloseModal, userid }) {
+    // this function will open a new Modal if the type new
     function handleButtonPress() {
         handleOpenModal("new")
     }
 
+    //this function is called upon hitting the submit button
     function handleSubmit(event) {
         event.preventDefault();
         handleCloseModal();
@@ -15,6 +17,7 @@ export default function NewTask({ createTask, showModal, handleOpenModal, handle
         createTask(formData, userid)
     }
 
+    // this hook holds the data that the user entered
     const [formData, setFormData] = useState({
         id: '',
         name: '',
@@ -24,6 +27,8 @@ export default function NewTask({ createTask, showModal, handleOpenModal, handle
         status: ''
     });
 
+    // this function sets all the data from the form
+    // it is called upon every change of data from the form
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -34,12 +39,15 @@ export default function NewTask({ createTask, showModal, handleOpenModal, handle
 
     return (
         <>
+        {/* this is the basic container that is displayed on the page */}
             <button type="button" onClick={handleButtonPress}>
                 <div className='border-dashed border-2 border-white rounded-lg'>
                     <FontAwesomeIcon className="p-12 h-12" icon={faCirclePlus} />
                 </div>
             </button>
+
             <Modal show={showModal} onClose={handleCloseModal}>
+            {/* this is the content of the modal */}
                 <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans">
                     <div className="flex flex-col">
                         <label htmlFor="name" className="mb-2 font-semibold text-gray-700">Name</label>

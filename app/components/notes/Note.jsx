@@ -2,6 +2,8 @@ import Modal from "../Modal";
 import { useState, useEffect } from "react";
 
 export default function Task({ note, showModal, handleOpenModal, handleCloseModal, updateNote, deleteNote, userid }) {
+
+    // this function reformats the date into the form dd.MM.yyy
     function reformatDate(dateString) {
         const date = new Date(dateString);
 
@@ -12,6 +14,9 @@ export default function Task({ note, showModal, handleOpenModal, handleCloseModa
         const formattedDate = `${day}.${month}.${year}`;
         return formattedDate;
     }
+
+    // this function cuts the preview of the note down to 100 characters
+    // this is done, to avoid a large amount of text being displayed in the preview
     function truncateNote(note) {
         const maxLength = 100;
 
@@ -29,9 +34,14 @@ export default function Task({ note, showModal, handleOpenModal, handleCloseModa
         }
         return note;
     }
+
+    // this function is called upon clicking on a note
+    // it openes the Modal with the corresponding note id
     function handleButtonPress() {
         handleOpenModal(note.id)
     }
+
+    // this function is called upon clicking the update button
     function handleSubmit(event) {
         event.preventDefault();
         handleCloseModal();
@@ -39,12 +49,14 @@ export default function Task({ note, showModal, handleOpenModal, handleCloseModa
             setChanged(false)
         })
     }
+
     const [formData, setFormData] = useState({
         id: note.id || '',
         name: note.name || '',
         content: note.content || '',
         creationDate: note.creationDate || ''
     });
+
     const [changed, setChanged] = useState(false);
 
     const handleChange = (e) => {
@@ -64,6 +76,7 @@ export default function Task({ note, showModal, handleOpenModal, handleCloseModa
 
     return (
         <>
+        {/* this is the basic display of the Note Card */}
             <button onClick={handleButtonPress} className='border-2 border-white rounded-lg'>
                 <div className='flex flex-row justify-between '>
                     <h1 className='p-6'>{note.name}</h1>
@@ -71,7 +84,9 @@ export default function Task({ note, showModal, handleOpenModal, handleCloseModa
                     <p className='p-6'>{reformatDate(note.creationDate)}</p>
                 </div>
             </button>
-            <Modal show={showModal} onClose={handleCloseModal} type={"note"}>
+
+            <Modal show={showModal} changed={changed} onClose={handleCloseModal} type={"note"}>
+            {/* here are the contents of the Modals */}
                 <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans h-full">
                     <div className="flex flex-col">
                         <label htmlFor="name" className="mb-2 font-semibold text-gray-700">Name</label>
