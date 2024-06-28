@@ -35,3 +35,7 @@ CLERK_SECRET_KEY=secret_key
 ## Running the project
 - Run `npm run dev`
 - Open [http://localhost:3000](http://localhost:3000) and the project will be ready for development testing!
+
+
+## Suggestion
+Even though it is possible to host the project yourself I suggest to use the deployed version on CampusCloud for testing

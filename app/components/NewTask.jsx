@@ -46,7 +46,7 @@ export default function NewTask({ createTask, showModal, handleOpenModal, handle
                 </div>
             </button>
 
-            <Modal show={showModal} onClose={handleCloseModal}>
+            <Modal show={showModal} onClose={handleCloseModal} type={"task"}>
             {/* this is the content of the modal */}
                 <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg shadow-md font-sans">
                     <div className="flex flex-col">
